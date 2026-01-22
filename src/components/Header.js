@@ -8,9 +8,10 @@ export function Header() {
     <p>Track your income, expenses, and budget</p>
 
     <nav class="header__nav">
-      <a href="/" class="header__link">Dashboard</a>
-      <a href="/transactions" class="header__link">Transactions</a>
-      <a href="/settings" class="header__link">Settings</a>
+      <button class="header__button"><a href="/" class="header__link">Dashboard</a></button>
+      <button class="header__button"><a href="/transactions" class="header__link">Income</a></button>
+      <button class="header__button"><a href="/settings" class="header__link">Expenses</a></button>
+      <button class="header__button"><a href="/settings" class="header__link">Budget</a></button>
     </nav>
   `;
 
