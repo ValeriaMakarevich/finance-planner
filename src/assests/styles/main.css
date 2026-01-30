@@ -1,8 +1,11 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  padding-left: 20px;
   background: rgb(230, 230, 230);
+}
+
+.page{
+  margin-left: 11rem;
 }
 
 .header {
@@ -50,4 +53,47 @@ justify-content: center;
   font-size: 14px;
 }
 
+.dashboard{
+  margin-top: 2rem;
+  background: white;
+}
 
+.dashboard__summary{
+  display: flex;
+  gap: 1rem;
+}
+
+.summary__item{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  width: 13rem;
+  height: 6rem;
+  color: white;
+  border-radius: 0.4rem;
+  padding-left: 1rem;
+}
+
+.summary__item--income{
+  background: linear-gradient(to left, #1552c4, #3e77ce);
+}
+
+.summary__item--expenses{
+  background: linear-gradient(to left, #dc2626, #cf3d3d);
+}
+
+.summary__item--balance{
+  background: linear-gradient(to left, #25ca0c, #3dcf53);
+}
+
+.summary__item--budget{
+  background: linear-gradient(to left, #8e0cca, #944ebd);
+}
+
+.budget-data{
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  grid-template-rows: auto auto;
+}
