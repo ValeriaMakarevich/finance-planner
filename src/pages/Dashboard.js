@@ -1,9 +1,9 @@
 export function Dashboard() {
-  const dashboard = document.createElement("dashboard");
+  const dashboard = document.createElement("main");
   dashboard.className = "dashboard";
 
   dashboard.innerHTML = `
-    <div class="dashboard">
+   
 
     <section class="dashboard__summary">
     <div class="summary__item summary__item--income">
@@ -28,22 +28,22 @@ export function Dashboard() {
     </section>
 
     <div class="budget-data">
-    <div>
-    <h3>Expenses by Category</h3>
-    <span>No expense data yet</span>
+    <div class="budget-data__item ">
+    <span class="budget-data__title">Expenses by Category</span>
+    <span class="budget-data__text">No expense data yet</span>
     </div>
 
-    <div>
-    <h3>Budget vs Actual Spending</h3>
-    <span>No budget data yet</span>
+    <div class="budget-data__item">
+    <span class="budget-data__title">Budget vs Actual Spending</span>
+    <span class="budget-data__text">No budget data yet</span>
     </div>
 
-     <div>
-    <h3>Recent Transactions</h3>
-    <span>No transactions yet</span>
+     <div class="budget-data__item budget-data__item--transactions">
+    <span class="budget-data__title">Recent Transactions</span>
+    <span class="budget-data__text">No transactions yet</span>
     </div>
     </div>
-    </div>
+   
    
   `;
 
