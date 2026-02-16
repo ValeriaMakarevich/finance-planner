@@ -1,31 +1,11 @@
+import { Summary } from "../components/Summary.js";
+
 export function Dashboard() {
   const dashboard = document.createElement("main");
   dashboard.className = "dashboard";
-
-  dashboard.innerHTML = `
-   
-
-    <section class="dashboard__summary">
-    <div class="summary__item summary__item--income">
-    <span>Total income</span>
-    <span>$0.00</span>
-    </div>
-
-    <div class="summary__item summary__item--expenses">
-    <span>Total expenses</span>
-    <span>$0.00</span>
-    </div>
-
-    <div class="summary__item summary__item--balance">
-    <span>Balance</span>
-    <span>$0.00</span>
-    </div>
-
-    <div class="summary__item summary__item--budget">
-    <span>Total budget</span>
-    <span>$0.00</span>
-    </div>
-    </section>
+  const summary = Summary()
+  dashboard.append(summary)
+  dashboard.innerHTML += `
 
     <div class="budget-data">
     <div class="budget-data__item ">

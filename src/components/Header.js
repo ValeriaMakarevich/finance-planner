@@ -1,4 +1,3 @@
-
 export function Header() {
   const header = document.createElement("header");
   header.className = "header";
@@ -8,10 +7,10 @@ export function Header() {
     <p>Track your income, expenses, and budget</p>
 
     <nav class="header__nav">
-      <button class="header__button"><a href="/" class="header__link">Dashboard</a></button>
-      <button class="header__button"><a href="/transactions" class="header__link">Income</a></button>
-      <button class="header__button"><a href="/settings" class="header__link">Expenses</a></button>
-      <button class="header__button"><a href="/settings" class="header__link">Budget</a></button>
+      <a href="/" class="header__link">Dashboard</a>
+      <a href="/transactions" class="header__link">Income</a>
+      <a href="/settings" class="header__link">Expenses</a>
+      <a href="/settings" class="header__link">Budget</a>
     </nav>
   `;
 
