@@ -1,10 +1,12 @@
 import { Header } from "./components/Header.js";
-import { Dashboard } from "./pages/Dashboard.js";
+import { MainContent } from "./components/MainContetnt.js";
+import { initRouter } from "/src/router.js";
 
 const app = document.getElementById("app");
 
 const header = Header();
-const dashboard = Dashboard();
+const mainContent = MainContent();
 
 app.append(header);
-app.append(dashboard);
+app.append(mainContent);
+initRouter()

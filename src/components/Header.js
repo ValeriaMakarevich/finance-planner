@@ -8,9 +8,9 @@ export function Header() {
 
     <nav class="header__nav">
       <a href="/" class="header__link">Dashboard</a>
-      <a href="/transactions" class="header__link">Income</a>
-      <a href="/settings" class="header__link">Expenses</a>
-      <a href="/settings" class="header__link">Budget</a>
+      <a href="/income" class="header__link">Income</a>
+      <a href="/expenses" class="header__link">Expenses</a>
+      <a href="/budget" class="header__link">Budget</a>
     </nav>
   `;
 

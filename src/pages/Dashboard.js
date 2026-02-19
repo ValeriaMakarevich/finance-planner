@@ -1,9 +1,13 @@
 import { Summary } from "../components/Summary.js";
 
 export function Dashboard() {
-  const dashboard = document.createElement("main");
+  const dashboard = document.createElement("section");
   dashboard.className = "dashboard";
-  const summary = Summary()
+  const summary = Summary({
+    income: 2500,
+    expenses: 1200,
+    budget: 3000,
+  });
   dashboard.append(summary)
   dashboard.innerHTML += `
 
