@@ -1,8 +1,9 @@
+import { TransactionSection } from "../components/TransactionSection.js";
+
 export function Expenses() {
-  const expenses = document.createElement("section");
-  expenses.className = "income";
-  expenses.innerHTML = `
-    <div>Income</div>
-    `;
-  return expenses
-}
+  return TransactionSection({
+    sectionClass: "expenses-balance",
+    text: "expenses",
+    buttonClass: "button-expenses",
+  });
+  }

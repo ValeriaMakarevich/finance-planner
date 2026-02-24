@@ -3,7 +3,6 @@ import { Dashboard } from "./pages/Dashboard.js";
 import { Expenses } from "./pages/Expenses.js";
 import { Income } from "./pages/Income.js";
 
-
 const routes = {
   "/": Dashboard,
   "/dashboard": Dashboard,
@@ -23,24 +22,19 @@ function getOrCreateMain() {
   return main;
 }
 
-
 function renderPage(path) {
   const main = getOrCreateMain();
 
-  // полностью очищаем предыдущий контент
   main.replaceChildren();
-
   const pageFactory = routes[path] || routes["/"];
-  const pageContent = pageFactory(); // ← это <section> или другой элемент
+  const pageContent = pageFactory();
 
   main.appendChild(pageContent);
 
-  // обновляем адресную строку
   window.history.pushState({ path }, "", path);
 }
 
 export function initRouter() {
-  // клики по ссылкам
   document.addEventListener("click", (e) => {
     const link = e.target.closest("a");
     if (!link) return;
@@ -52,13 +46,11 @@ export function initRouter() {
     renderPage(href);
   });
 
-  // поддержка истории браузера (назад/вперёд)
   window.addEventListener("popstate", (event) => {
     const path = event.state?.path || window.location.pathname;
     renderPage(path);
   });
 
-  // первый рендер
   const initialPath = window.location.pathname || "/";
   renderPage(initialPath);
 }

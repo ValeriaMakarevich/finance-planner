@@ -1,5 +1,5 @@
 import { Header } from "./components/Header.js";
-import { MainContent } from "./components/MainContetnt.js";
+import { MainContent } from "./components/MainContent.js";
 import { initRouter } from "/src/router.js";
 
 const app = document.getElementById("app");
