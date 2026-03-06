@@ -1,9 +1,11 @@
-import { Summary } from "../components/Summary.js";
+import { DashboardSummary } from "../components/DashboardSummary.js";
+
+
 
 export function Dashboard() {
   const dashboard = document.createElement("section");
   dashboard.className = "dashboard";
-  const summary = Summary({
+  const summary = DashboardSummary({
     income: 2500,
     expenses: 1200,
     budget: 3000,

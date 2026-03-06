@@ -1,17 +1,14 @@
 export function TransactionSection({ sectionClass, text, buttonClass }) {
-  // Определяем, доход это или расход
-  const isIncome = text.toLowerCase() === "income";
-  const title = text.charAt(0).toUpperCase() + text.slice(1); // Income / Expenses
 
-  // Локальное состояние (пока храним внутри компонента)
+  const isIncome = text.toLowerCase() === "income";
+  const title = text.charAt(0).toUpperCase() + text.slice(1); 
+
   let transactions = [];
   let total = 0;
 
-  // Создаём секцию
   const incomeExpenses = document.createElement("section");
   incomeExpenses.className = "income-expenses";
 
-  // Формируем HTML — почти как у тебя, но с нужными атрибутами и data-метками
   incomeExpenses.innerHTML = `
     <div class="income-expenses_container">
       <div class="income-expenses_balance ${sectionClass}">
@@ -88,14 +85,9 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
     </div>
   `;
 
-  // Находим важные элементы
   const form = incomeExpenses.querySelector(".income-expenses_form");
   const totalDisplay = incomeExpenses.querySelector("[data-total]");
   const listContainer = incomeExpenses.querySelector("[data-trans-list]");
-
-  // ────────────────────────────────────────────────
-  // Функции
-  // ────────────────────────────────────────────────
 
   function updateTotal() {
     total = transactions.reduce((sum, t) => sum + Number(t.amount), 0);
@@ -110,8 +102,8 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
     }
 
     listContainer.innerHTML = transactions
-      .slice() // копия массива
-      .sort((a, b) => b.createdAt - a.createdAt) // новые сверху
+      .slice() 
+      .sort((a, b) => b.createdAt - a.createdAt) 
       .map(
         (t) => `
         <div class="transaction-row ${isIncome ? "income-row" : "expense-row"}">
@@ -125,9 +117,6 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
       .join("");
   }
 
-  // ────────────────────────────────────────────────
-  // Обработчик отправки формы
-  // ────────────────────────────────────────────────
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -153,17 +142,12 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
     updateTotal();
     renderTransactions();
 
-    // Очистка формы
     form.reset();
-    // Восстанавливаем сегодняшнюю дату
+
     form.querySelector('[name="date"]').value = new Date()
       .toISOString()
       .slice(0, 10);
   });
-
-  // ────────────────────────────────────────────────
-  // Первый рендер
-  // ────────────────────────────────────────────────
 
   updateTotal();
   renderTransactions();

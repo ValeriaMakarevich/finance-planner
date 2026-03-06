@@ -61,20 +61,20 @@ justify-content: center;
 
 .dashboard__summary{
   display: flex;
-  justify-content: start;
+  justify-content: center;
   gap: 1rem;
   margin-bottom: 1rem;
 }
 
-.summary__item{
+.summary__item {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
   font-size: 0.9rem;
-  width: 13rem;
+  flex: 1;              
+  min-width: 0;         
   height: 6rem;
-  flex-shrink: 1;
   color: white;
   border-radius: 0.4rem;
   padding-left: 1rem;
@@ -94,6 +94,18 @@ justify-content: center;
 
 .summary__item--budget{
   background: linear-gradient(to left, #8e0cca, #944ebd);
+}
+
+.summary__item--total-budget{
+  background: linear-gradient(to left, #1552c4, #3e77ce);
+}
+
+.summary__item--total-spent{
+  background: linear-gradient(to left, #8e0cca, #944ebd);
+}
+
+.summary__item--remaining{
+   background: linear-gradient(to left, #25ca0c, #3dcf53);
 }
 
 .budget-data{
@@ -150,7 +162,7 @@ font-size: 0.8rem;
 .income-expenses_form{
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;                /* расстояние между всеми элементами */
+  gap: 0.75rem;                
   align-items: center;
   justify-content: center;
   padding: 0.9rem 0; 
