@@ -89,7 +89,7 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
   const totalDisplay = incomeExpenses.querySelector("[data-total]");
   const listContainer = incomeExpenses.querySelector("[data-trans-list]");
 
-  function updateTotal() {
+  function updateDushboard() {
     total = transactions.reduce((sum, t) => sum + Number(t.amount), 0);
     const sign = isIncome ? "+" : "-";
     totalDisplay.textContent = sign + total.toFixed(2);
@@ -139,7 +139,7 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
 
     transactions.push(newEntry);
 
-    updateTotal();
+    updateDushboard();
     renderTransactions();
 
     form.reset();
@@ -149,7 +149,7 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
       .slice(0, 10);
   });
 
-  updateTotal();
+  updateDushboard();
   renderTransactions();
 
   return incomeExpenses;
