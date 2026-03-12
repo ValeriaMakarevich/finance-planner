@@ -1,5 +1,6 @@
-// pages/Budget.js
+
 import { BudgetSummary } from "../components/BudgetSummary.js";
+import { getTotalSpent } from "../utils/storage.js";
 
 const STORAGE_KEY = "budget-planner-budgets";
 
@@ -7,13 +8,11 @@ export function Budget() {
   const page = document.createElement("section");
   page.className = "budget-page";
 
-
   const summary = BudgetSummary({
     budget: 0,
     spent: 0,
   });
   page.appendChild(summary);
-
 
   const totalBudgetEl = summary.querySelector(
     ".summary__item--total-budget span:last-child",
@@ -25,31 +24,30 @@ export function Budget() {
     ".summary__item--remaining span:last-child",
   );
 
-  
   const container = document.createElement("div");
   container.className = "budget-container";
 
   container.innerHTML = `
-    <div class="budget-form-section">
-      <p class="budget-title">Set Budget Limit</p>
+    <div class="budget__form-section">
+      <p class="budget__title">Set Budget Limit</p>
 
-      <form class="budget-form">
-        <div class="form-row">
+      <form class="budget__form">
+        <div class="budget__form-row">
           <label>Category</label>
           <select name="category" required>
             <option value="" disabled selected>Выберите категорию</option>
-                    <option value="Food">Food</option>
-                    <option value="Transport">Transport</option>
-                    <option value="Housing">Housing</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Health">Health</option>
-                    <option value="Other">Other</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Housing">Housing</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Health">Health</option>
+            <option value="Other">Other</option>
           </select>
         </div>
 
         <div class="form-row">
           <label>Budget Limit</label>
-          <div class="input-currency">
+          <div class="budget__input">
             <span>$</span>
             <input 
               type="number" 
@@ -62,44 +60,50 @@ export function Budget() {
           </div>
         </div>
 
-        <button type="submit" class="btn-add-budget">+ Set Budget</button>
+        <button type="submit" class="budget__button">+ Set Budget</button>
       </form>
     </div>
 
-    <div class="budget-history">
+    <div class="budget__history">
       <p>Budget Limits</p>
-      <div data-budget-list class="budget-list"></div>
+      <div data-budget-list class="budget__list"></div>
     </div>
   `;
 
   page.appendChild(container);
 
- 
   let budgets = loadBudgets();
+
 
   function loadBudgets() {
     try {
       const json = localStorage.getItem(STORAGE_KEY);
       return json ? JSON.parse(json) : [];
-    } catch {
+    } catch (err) {
+      console.warn("Ошибка загрузки бюджетов:", err);
       return [];
     }
   }
 
   function saveBudgets() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(budgets));
+    document.dispatchEvent(new Event("budget-updated"));
   }
 
+ 
   function getTotals() {
     const totalBudget = budgets.reduce(
       (sum, item) => sum + Number(item.limit),
       0,
     );
-    const totalSpent = 0; 
+
+    const totalSpent = getTotalSpent(); 
+
     const remaining = totalBudget - totalSpent;
 
     return { totalBudget, totalSpent, remaining };
   }
+
 
   function updateSummary() {
     const { totalBudget, totalSpent, remaining } = getTotals();
@@ -108,6 +112,7 @@ export function Budget() {
     if (totalSpentEl) totalSpentEl.textContent = totalSpent.toFixed(2);
     if (remainingEl) remainingEl.textContent = remaining.toFixed(2);
   }
+
 
   function renderList() {
     const list = container.querySelector("[data-budget-list]");
@@ -118,34 +123,33 @@ export function Budget() {
       return;
     }
 
-
     budgets
       .slice()
       .sort((a, b) => b.createdAt - a.createdAt)
       .forEach((item, idx) => {
         const row = document.createElement("div");
-        row.className = "budget-row";
+        row.className = "budget__history-element";
         row.innerHTML = `
-          <span class="category">${item.category}</span>
-          <span class="limit">$${Number(item.limit).toFixed(2)}</span>
-          <button class="btn-remove" data-idx="${idx}">Remove</button>
+          <span class="budget__history-category">${item.category}</span>
+          <span class="budget__history-limit">$${Number(item.limit).toFixed(2)}</span>
+          <button class="budget__btn-remove" data-idx="${idx}">Remove</button>
         `;
         list.appendChild(row);
       });
 
-    // Удаление
-    list.querySelectorAll(".btn-remove").forEach((btn) => {
+    list.querySelectorAll(".budget__btn-remove").forEach((btn) => {
       btn.addEventListener("click", () => {
         const idx = Number(btn.dataset.idx);
         budgets.splice(idx, 1);
-        saveBudgets();
+        saveBudgets(); 
         renderList();
         updateSummary();
       });
     });
   }
 
-  const form = container.querySelector(".budget-form");
+
+  const form = container.querySelector(".budget__form");
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -159,7 +163,6 @@ export function Budget() {
     }
 
     const category = formData.get("category");
-
 
     const existingIndex = budgets.findIndex((b) => b.category === category);
 
@@ -180,7 +183,7 @@ export function Budget() {
       });
     }
 
-    saveBudgets();
+    saveBudgets(); 
     form.reset();
     renderList();
     updateSummary();

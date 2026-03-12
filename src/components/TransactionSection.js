@@ -1,10 +1,12 @@
 export function TransactionSection({ sectionClass, text, buttonClass }) {
-
   const isIncome = text.toLowerCase() === "income";
-  const title = text.charAt(0).toUpperCase() + text.slice(1); 
+  const title = text.charAt(0).toUpperCase() + text.slice(1);
+
+  const STORAGE_KEY = isIncome
+    ? "budget-planner-income-transactions"
+    : "budget-planner-expense-transactions";
 
   let transactions = [];
-  let total = 0;
 
   const incomeExpenses = document.createElement("section");
   incomeExpenses.className = "income-expenses";
@@ -89,10 +91,29 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
   const totalDisplay = incomeExpenses.querySelector("[data-total]");
   const listContainer = incomeExpenses.querySelector("[data-trans-list]");
 
-  function updateDushboard() {
-    total = transactions.reduce((sum, t) => sum + Number(t.amount), 0);
-    const sign = isIncome ? "+" : "-";
-    totalDisplay.textContent = sign + total.toFixed(2);
+
+  function loadTransactions() {
+    try {
+      const json = localStorage.getItem(STORAGE_KEY);
+      transactions = json ? JSON.parse(json) : [];
+    } catch (err) {
+      console.warn("Ошибка при загрузке транзакций:", err);
+      transactions = [];
+    }
+    updateDashboard();
+    renderTransactions();
+  }
+
+  function saveTransactions() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+    document.dispatchEvent(new Event("budget-updated"));
+  }
+
+
+
+  function updateDashboard() {
+    const total = transactions.reduce((sum, t) => sum + Number(t.amount), 0);
+    totalDisplay.textContent = "$" + total.toFixed(2);
   }
 
   function renderTransactions() {
@@ -102,8 +123,8 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
     }
 
     listContainer.innerHTML = transactions
-      .slice() 
-      .sort((a, b) => b.createdAt - a.createdAt) 
+      .slice()
+      .sort((a, b) => b.createdAt - a.createdAt)
       .map(
         (t) => `
         <div class="transaction-row ${isIncome ? "income-row" : "expense-row"}">
@@ -139,18 +160,18 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
 
     transactions.push(newEntry);
 
-    updateDushboard();
+    saveTransactions();
+
+    updateDashboard();
     renderTransactions();
 
     form.reset();
-
     form.querySelector('[name="date"]').value = new Date()
       .toISOString()
       .slice(0, 10);
   });
-
-  updateDushboard();
-  renderTransactions();
+  
+  loadTransactions();
 
   return incomeExpenses;
 }
