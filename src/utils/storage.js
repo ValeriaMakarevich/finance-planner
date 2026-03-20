@@ -53,3 +53,19 @@ export function getTotalSpent() {
 export function notifyBudgetChanged() {
   document.dispatchEvent(new Event("budget-updated"));
 }
+
+export function getExpensesByCategory(category) {
+  try {
+    const json = localStorage.getItem(EXPENSE_KEY);
+    if (!json) return 0;
+    const expenses = JSON.parse(json);
+    
+  
+    return expenses
+      .filter(item => item.category === category)
+      .reduce((sum, item) => sum + Number(item.amount), 0);
+  } catch (err) {
+    console.warn("Ошибка при подсчёте расходов по категории:", err);
+    return 0;
+  }
+}
