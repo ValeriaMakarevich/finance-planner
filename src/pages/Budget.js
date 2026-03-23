@@ -152,7 +152,7 @@ export function Budget() {
     list.querySelectorAll(".budget__btn-remove").forEach((btn) => {
       btn.addEventListener("click", () => {
         const createdAt = Number(btn.dataset.time);
-        // Фильтруем массив, убирая элемент с таким же createdAt
+       
         budgets = budgets.filter((b) => b.createdAt !== createdAt);
         saveBudgets();
         renderList();

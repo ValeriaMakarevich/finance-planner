@@ -12,18 +12,18 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
   incomeExpenses.className = "income-expenses";
 
   incomeExpenses.innerHTML = `
-    <div class="income-expenses_container">
-      <div class="income-expenses_balance ${sectionClass}">
-        <p class="balance_text">Total ${title}</p>
+    <div class="income-expenses__container">
+      <div class="income-expenses__balance ${sectionClass}">
+        <p class="income-expenses__balance-text">Total ${title}</p>
         <span data-total>$0.00</span>
       </div>
 
-      <div class="income-expenses_add">
-        <p class="income-expenses_title">Add ${title}</p>
-        <form class="income-expenses_form">
-          <div class="income-expenses_input-container">
-            <label class="income-expenses_label">Amount</label>
-            <input class="income-expenses_input" 
+      <div class="income-expenses__add">
+        <p class="income-expenses__title">Add ${title}</p>
+        <form class="income-expenses__form">
+          <div class="income-expenses__input-container">
+            <label class="income-expenses__label">Amount</label>
+            <input class="income-expenses__input" 
                    type="number" 
                    name="amount" 
                    step="0.01" 
@@ -32,9 +32,9 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
                    required>
           </div>
 
-          <div class="income-expenses_input-container">
-            <label class="income-expenses_label">Category</label>
-            <select class="income-expenses_input" name="category" required>
+          <div class="income-expenses__input-container">
+            <label class="income-expenses__label">Category</label>
+            <select class="income-expenses__input" name="category" required>
               <option value="" disabled selected>Выберите категорию</option>
               ${
                 isIncome
@@ -58,39 +58,38 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
             </select>
           </div>
 
-          <div class="income-expenses_input-container">
-            <label class="income-expenses_label">Description</label>
-            <input class="income-expenses_input" 
+          <div class="income-expenses__input-container">
+            <label class="income-expenses__label">Description</label>
+            <input class="income-expenses__input" 
                    type="text" 
                    name="description" 
                    placeholder="Description">
           </div>
 
-          <div class="income-expenses_input-container">
-            <label class="income-expenses_label">Date</label>
-            <input class="income-expenses_input" 
+          <div class="income-expenses__input-container">
+            <label class="income-expenses__label">Date</label>
+            <input class="income-expenses__input" 
                    type="date" 
                    name="date" 
                    value="${new Date().toISOString().slice(0, 10)}">
           </div>
 
-          <button class="income-expenses_button ${buttonClass}">
+          <button class="income-expenses__button ${buttonClass}">
             + Add ${title}
           </button>
         </form>
       </div>
 
-      <div class="income-expenses_history">
+      <div class="income-expenses__history">
         <p>${title} History</p>
         <div data-trans-list></div>
       </div>
     </div>
   `;
 
-  const form = incomeExpenses.querySelector(".income-expenses_form");
+  const form = incomeExpenses.querySelector(".income-expenses__form");
   const totalDisplay = incomeExpenses.querySelector("[data-total]");
   const listContainer = incomeExpenses.querySelector("[data-trans-list]");
-
 
   function loadTransactions() {
     try {
@@ -109,8 +108,6 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
     document.dispatchEvent(new Event("budget-updated"));
   }
 
-
-
   function updateDashboard() {
     const total = transactions.reduce((sum, t) => sum + Number(t.amount), 0);
     totalDisplay.textContent = "$" + total.toFixed(2);
@@ -125,19 +122,53 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
     listContainer.innerHTML = transactions
       .slice()
       .sort((a, b) => b.createdAt - a.createdAt)
-      .map(
-        (t) => `
-        <div class="transaction-row ${isIncome ? "income-row" : "expense-row"}">
-          <span class="amount">${isIncome ? "+" : "-"}${Number(t.amount).toFixed(2)}</span>
-          <span class="category">${t.category}</span>
-          <span class="description">${t.description || "—"}</span>
-          <span class="date">${t.date || "—"}</span>
-        </div>
-      `,
-      )
-      .join("");
-  }
+      .map((t) => {
+        const sign = isIncome ? "+" : "-";
+        const rowClass = isIncome
+          ? "income-expenses__transaction-row--income"
+          : "income-expenses__transaction-row--expenses";
+        const formattedDate = t.date
+          ? new Date(t.date).toLocaleDateString("ru-RU", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            })
+          : "—";
 
+        return `
+          <div class="income-expenses__transaction-row ${rowClass}" data-id="${t.createdAt}">
+            <div class="income-expenses__transaction-info">
+              <span class="income-expenses__transaction-category">${t.category}</span>
+              <span class="income-expenses__transaction-meta">${t.category} • ${formattedDate}</span>
+            </div>
+            <div class="income-expenses__transaction-right">
+              <span class="income-expenses__amount">${sign}$${Number(t.amount).toFixed(2)}</span>
+              <button class="income-expenses__btn-delete" title="Удалить">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+
+  
+    listContainer.querySelectorAll(".income-expenses__btn-delete").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const row = e.target.closest(".income-expenses__transaction-row");
+        const id = Number(row.dataset.id);
+
+        if (confirm("Удалить эту транзакцию?")) {
+          transactions = transactions.filter((t) => t.createdAt !== id);
+          saveTransactions();
+          updateDashboard();
+          renderTransactions();
+        }
+      });
+    });
+  }
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -170,7 +201,7 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
       .toISOString()
       .slice(0, 10);
   });
-  
+
   loadTransactions();
 
   return incomeExpenses;
