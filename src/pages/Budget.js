@@ -1,5 +1,5 @@
 import { BudgetSummary } from "../components/BudgetSummary.js";
-import { getTotalSpent, getExpensesByCategory } from "../utils/storage.js";
+import { getTotalSpent, getExpenseAmountByCategory } from "../utils/storage.js";
 
 const STORAGE_KEY = "budget-planner-budgets";
 
@@ -117,16 +117,13 @@ export function Budget() {
       return;
     }
 
-    
     const sortedBudgets = budgets
       .slice()
       .sort((a, b) => b.createdAt - a.createdAt);
 
     sortedBudgets.forEach((item) => {
-     
-      const spent = getExpensesByCategory(item.category);
+      const spent = getExpenseAmountByCategory(item.category);
 
-      
       const limit = Number(item.limit);
       const remaining = limit - spent;
       const percent = limit > 0 ? Math.min((spent / limit) * 100, 100) : 0;
@@ -134,7 +131,7 @@ export function Budget() {
       const row = document.createElement("div");
       row.className = "budget__history-element";
 
-     row.innerHTML = `
+      row.innerHTML = `
   <span class="budget__history-category">${item.category}</span>
   <button class="budget__btn-remove" data-time="${item.createdAt}">🗑</button>
   <span class="budget__spent">$${spent.toFixed(2)} spent</span>
@@ -148,11 +145,10 @@ export function Budget() {
       list.appendChild(row);
     });
 
-    
     list.querySelectorAll(".budget__btn-remove").forEach((btn) => {
       btn.addEventListener("click", () => {
         const createdAt = Number(btn.dataset.time);
-       
+
         budgets = budgets.filter((b) => b.createdAt !== createdAt);
         saveBudgets();
         renderList();
@@ -181,13 +177,12 @@ export function Budget() {
       if (!confirm(`Лимит для "${category}" уже установлен. Заменить?`)) {
         return;
       }
-    
+
       budgets[existingIndex] = {
         ...budgets[existingIndex],
         limit,
       };
     } else {
-      
       budgets.push({
         category,
         limit,

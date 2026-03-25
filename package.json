@@ -1,0 +1,22 @@
+{
+  "name": "flow-budget",
+  "version": "1.0.0",
+  "description": "Finance planner app",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'No build step required'",
+    "preview": "npx serve ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ValeriaMakarevich/finance-planner.git"
+  },
+  "keywords": [
+    "finance",
+    "budget",
+    "vanilla-js"
+  ],
+  "author": "Valeria Makarevich",
+  "license": "MIT"
+}
