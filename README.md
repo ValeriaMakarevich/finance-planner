@@ -1,6 +1,6 @@
 # Financial Planner
 
-** A simple and convenient web application for managing your budget**
+**A simple and convenient web application for managing your budget**
 
  Plan your budget, record your income and expenses, view your transaction history, and analyze your expenses — all these features are available here.
 
