@@ -34,7 +34,7 @@ export function Budget() {
         <div class="budget__select-wrapper">
           <label>Category</label>
           <select class="budget__select" name="category" required>
-            <option value="" disabled selected>Выберите категорию</option>
+            <option value="" disabled selected>Select a category</option>
             <option value="Food">Food</option>
             <option value="Transport">Transport</option>
             <option value="Housing">Housing</option>
@@ -113,7 +113,7 @@ export function Budget() {
     list.innerHTML = "";
 
     if (budgets.length === 0) {
-      list.innerHTML = `<p class="no-data">Пока нет установленных лимитов</p>`;
+      list.innerHTML = `<p class="budget__no-data">No budgets set yet</p>`;
       return;
     }
 

@@ -81,7 +81,7 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
       </div>
 
       <div class="income-expenses__history">
-        <p>${title} History</p>
+        <p>${title} history</p>
         <div data-trans-list></div>
       </div>
     </div>
@@ -115,7 +115,7 @@ export function TransactionSection({ sectionClass, text, buttonClass }) {
 
   function renderTransactions() {
     if (transactions.length === 0) {
-      listContainer.innerHTML = `<p class="no-transactions">Пока нет записей</p>`;
+      listContainer.innerHTML = `<p class="income-expenses__no-transactions">No recorded yet</p>`;
       return;
     }
 
